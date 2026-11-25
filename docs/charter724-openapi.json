@@ -1,0 +1,2611 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "APICore",
+    "description": "API with JWT Authentication — synced with ServicesNew codebase.\n\nSupport: 09337243322\n\n**Auth flow:** `POST /api/userPassBase64` → `POST /api/Login` → use `Authorization: Bearer {access_token}` on `/api/WebService/*`.\n\n**IP whitelist:** Non-demo tokens are validated against the client's IP (`valid_ip` / `valid_ip2`).\n\n**Currency:** Monetary fields are returned in the site currency (`currency` field). Amounts are `number` (may include decimals).",
+    "version": "1.1.0",
+    "contact": {
+      "name": "API Support",
+      "url": "https://api724.ir"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api724.ir",
+      "description": "Production"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Login",
+      "description": "Authentication & utilities"
+    },
+    {
+      "name": "WebService",
+      "description": "Protected flight / reserve / ticket endpoints (JWT required)"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/api/userPassBase64": {
+      "post": {
+        "tags": [
+          "Login"
+        ],
+        "summary": "Convert username/password to Base64 credential",
+        "description": "For test/demo use username=`demo` / password=`demo` if enabled on server.",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AcountInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "userPassBase64"
+                    },
+                    "Data": {
+                      "type": "string",
+                      "example": "Basic ZGVtbzpkZW1v"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "-404"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Login": {
+      "post": {
+        "tags": [
+          "Login"
+        ],
+        "summary": "Obtain JWT access token",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "login"
+                    },
+                    "Data": {
+                      "$ref": "#/components/schemas/LoginTokenData"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "-104"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/showmyip": {
+      "get": {
+        "tags": [
+          "Login"
+        ],
+        "summary": "Detect client IP seen by API",
+        "description": "Useful for whitelist setup (valid_ip / valid_ip2).",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "showmyip"
+                    },
+                    "Data": {
+                      "type": "string",
+                      "example": "203.0.113.10"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/WebService/Airportlist": {
+      "get": {
+        "tags": [
+          "WebService"
+        ],
+        "summary": "Airport / city list",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "Airportlist"
+                    },
+                    "Data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AirportItem"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "-105"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/WebService/Available15Days": {
+      "post": {
+        "tags": [
+          "WebService"
+        ],
+        "summary": "Best price for the next 15-day window",
+        "description": "Returns one row per day in the selected window (`pdate`). Use price=null days as no availability.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Avail15DaysInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "FifteenFlights"
+                    },
+                    "Data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/FifteenDayItem"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "-105"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "validation"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/WebService/Available": {
+      "post": {
+        "tags": [
+          "WebService"
+        ],
+        "summary": "Search flights for a specific date",
+        "description": "Returns priced flights for the selected day.\n\n**New/important response fields:**\n- `currency` — site currency of price fields\n- `airline_logo` / `airline_logo_url`\n- `bag`, `duration_minutes`\n- `end_date_flight` / `end_time_flight` — calculated arrival (null if stop or unknown duration)\n- `cancellation_rule` — parsed penalty rules\n- `nationalities.allowed` / `nationalities.disallowed` — FA/EN/AR name lists\n- `other_flights` — alternatives in the same group\n\nDate must be today or later (`-203` otherwise).",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AvailInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "avail"
+                    },
+                    "Data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/FlightItem"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "-203"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "-105"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "validation"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/WebService/GetCharge": {
+      "get": {
+        "tags": [
+          "WebService"
+        ],
+        "summary": "Check credit / charge balances",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "GetCharge"
+                    },
+                    "Data": {
+                      "$ref": "#/components/schemas/ChargeData"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "-105"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "upstream"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/WebService/GetCaptcha": {
+      "post": {
+        "tags": [
+          "WebService"
+        ],
+        "summary": "Start reservation (create id_request + optional captcha)",
+        "description": "Creates a booking request for the selected flight. Returns `messages` path-alert when applicable.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CaptchaInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "Captcha"
+                    },
+                    "Data": {
+                      "$ref": "#/components/schemas/CaptchaData"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "-305"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "-105"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/WebService/Reservation": {
+      "post": {
+        "tags": [
+          "WebService"
+        ],
+        "summary": "Temporary reservation with passengers",
+        "description": "Validates passengers then creates temporary reserve / factor.\n\nCommon errors: `-406` invalid id_request, `-411` bad captcha (returns new link_captcha), `-412` type, `-416` gender, `-417` nationality, `-418` national code, `-419` passport, `-420` duplicate/expdate, `-421/-422/-423` birthday, `-424/-425` INF/ADL rules, `-426` max passengers.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReservationInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "Reservation"
+                    },
+                    "Data": {
+                      "$ref": "#/components/schemas/ReservationData"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "-411"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "-105"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "500"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/WebService/BuyTicket": {
+      "post": {
+        "tags": [
+          "WebService"
+        ],
+        "summary": "Issue ticket using credit",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuyTicketInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "BuyTicket"
+                    },
+                    "Data": {
+                      "$ref": "#/components/schemas/BuyTicketData"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "error for pay with credit"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "-105"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/WebService/PayAndBuyTicket": {
+      "post": {
+        "tags": [
+          "WebService"
+        ],
+        "summary": "Create bank payment link for ticket issuance",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PayAndBuyTicketInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "PayAndBuyTicket"
+                    },
+                    "Data": {
+                      "$ref": "#/components/schemas/PayAndBuyTicketData"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "-702"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "-105"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/WebService/CheckTransaction": {
+      "post": {
+        "tags": [
+          "WebService"
+        ],
+        "summary": "Verify bank payment transaction",
+        "description": "On success Data is boolean true.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckTransactionInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "CheckTransaction"
+                    },
+                    "Data": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "Payment Not Verify"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "-105"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/WebService/CheckPenalti": {
+      "post": {
+        "tags": [
+          "WebService"
+        ],
+        "summary": "Check cancellation penalty",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckPenaltiInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "CheckPenalti"
+                    },
+                    "Data": {
+                      "$ref": "#/components/schemas/CheckPenaltiData"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "-502"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "-105"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/WebService/CancelTicket": {
+      "post": {
+        "tags": [
+          "WebService"
+        ],
+        "summary": "Cancel ticket(s)",
+        "description": "If all passengers' tickets are cancelled, reserve status becomes Cancelled. Data is empty array on success.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelTicketInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "Ticket Canceled Successfully"
+                    },
+                    "Data": {
+                      "type": "array",
+                      "items": {},
+                      "example": []
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "refund failed"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "Result",
+                    "Msg",
+                    "Data"
+                  ],
+                  "properties": {
+                    "Result": {
+                      "type": "string",
+                      "enum": [
+                        "true",
+                        "false"
+                      ],
+                      "example": "true"
+                    },
+                    "Msg": {
+                      "type": "string",
+                      "example": "-105"
+                    },
+                    "Data": {
+                      "description": "Error payload (string, object, or array depending on endpoint)"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT from /api/Login. Header: Authorization: Bearer {token}"
+      }
+    },
+    "schemas": {
+      "AcountInfo": {
+        "title": "AcountInfo",
+        "type": "object",
+        "required": [
+          "username",
+          "password"
+        ],
+        "description": "Username/password for generating Base64 credential",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "demo"
+          },
+          "password": {
+            "type": "string",
+            "example": "demo",
+            "format": "password"
+          }
+        }
+      },
+      "LoginInfo": {
+        "title": "LoginInfo",
+        "type": "object",
+        "required": [
+          "userPassBase64"
+        ],
+        "description": "Base64 credential from /api/userPassBase64",
+        "properties": {
+          "userPassBase64": {
+            "type": "string",
+            "example": "Basic ZGVtbzpkZW1v"
+          }
+        }
+      },
+      "LoginTokenData": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "description": "JWT access token"
+          },
+          "expires_Utc": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Token expiry (typically +1 day)"
+          },
+          "token_type": {
+            "type": "string",
+            "example": "Bearer"
+          }
+        }
+      },
+      "AirportItem": {
+        "type": "object",
+        "properties": {
+          "code_int": {
+            "type": "integer",
+            "description": "Internal city/airport id",
+            "example": 1
+          },
+          "name_en": {
+            "type": "string",
+            "example": "Mashhad"
+          },
+          "name_fa": {
+            "type": "string",
+            "example": "مشهد"
+          },
+          "IATA_airport": {
+            "type": "string",
+            "example": "MHD",
+            "description": "IATA code used in from_flight / to_flight"
+          }
+        }
+      },
+      "AvailInfo": {
+        "title": "AvailInfo",
+        "type": "object",
+        "required": [
+          "from_flight",
+          "to_flight",
+          "date_flight"
+        ],
+        "description": "Origin, destination and flight date. IKA is normalized to THR server-side.",
+        "properties": {
+          "from_flight": {
+            "type": "string",
+            "example": "MHD",
+            "description": "IATA origin (IKA mapped to THR)"
+          },
+          "to_flight": {
+            "type": "string",
+            "example": "KIH",
+            "description": "IATA destination (IKA mapped to THR)"
+          },
+          "date_flight": {
+            "type": "string",
+            "format": "date",
+            "example": "2026-11-20",
+            "description": "yyyy-MM-dd; must be today or later"
+          }
+        }
+      },
+      "Avail15DaysInfo": {
+        "title": "Avail15DaysInfo",
+        "type": "object",
+        "required": [
+          "from_flight",
+          "to_flight"
+        ],
+        "description": "Best price calendar for a 15-day window",
+        "properties": {
+          "from_flight": {
+            "type": "string",
+            "example": "MHD"
+          },
+          "to_flight": {
+            "type": "string",
+            "example": "KIH"
+          },
+          "pdate": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3,
+            "default": 0,
+            "example": 0,
+            "description": "Window index: 0=days 0-14 from today, 1=15-29, 2=30-44, 3=45-59"
+          }
+        }
+      },
+      "FifteenDayItem": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "example": "2026-11-10"
+          },
+          "day_name": {
+            "type": "string",
+            "example": "Tuesday"
+          },
+          "currency": {
+            "type": "string",
+            "example": "IRR",
+            "description": "Site currency code"
+          },
+          "price": {
+            "type": "number",
+            "nullable": true,
+            "example": 8500000,
+            "description": "Lowest price for that day in site currency; null if no flight"
+          }
+        }
+      },
+      "CancellationRuleItem": {
+        "type": "object",
+        "properties": {
+          "percent": {
+            "type": "integer",
+            "example": 30,
+            "description": "Penalty percent"
+          },
+          "description": {
+            "type": "string",
+            "example": "از ۲۴ ساعت قبل از پرواز",
+            "description": "Localized rule text (site language)"
+          }
+        }
+      },
+      "NationalityNamesByLang": {
+        "type": "object",
+        "description": "Nationality display names per language. Empty array means no list for that locale.",
+        "properties": {
+          "fa": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "ایرانی",
+              "عراقی"
+            ]
+          },
+          "en": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Iranian",
+              "Iraqi"
+            ]
+          },
+          "ar": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "إيراني"
+            ]
+          }
+        }
+      },
+      "FlightNationalities": {
+        "type": "object",
+        "description": "Allowed / disallowed passenger nationalities for this flight (localized lists).",
+        "properties": {
+          "allowed": {
+            "$ref": "#/components/schemas/NationalityNamesByLang"
+          },
+          "disallowed": {
+            "$ref": "#/components/schemas/NationalityNamesByLang"
+          }
+        }
+      },
+      "OtherFlightItem": {
+        "type": "object",
+        "description": "Alternative same-route options aggregated under the selected flight",
+        "properties": {
+          "currency": {
+            "type": "string",
+            "example": "IRR"
+          },
+          "price_final": {
+            "type": "number",
+            "example": 12500000
+          },
+          "capacity": {
+            "type": "integer",
+            "example": 5
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "charter",
+              "system"
+            ],
+            "example": "charter"
+          },
+          "DisplayLable": {
+            "type": "string",
+            "example": "اکونومی"
+          },
+          "type_flight": {
+            "type": "string",
+            "example": "Economy"
+          }
+        }
+      },
+      "FlightItem": {
+        "type": "object",
+        "description": "Single flight from Available",
+        "properties": {
+          "ajency_online_ID": {
+            "type": "integer",
+            "example": 446,
+            "description": "Agency id — required later in GetCaptcha"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "charter",
+              "system"
+            ],
+            "example": "charter"
+          },
+          "DisplayLable": {
+            "type": "string",
+            "example": "اکونومی",
+            "description": "Cabin class label (FA)"
+          },
+          "currency": {
+            "type": "string",
+            "example": "IRR",
+            "description": "Site currency for price fields"
+          },
+          "price_final": {
+            "type": "number",
+            "example": 12500000,
+            "description": "Adult final price (site currency). 0 when capacity is 0"
+          },
+          "price_final_chd": {
+            "type": "number",
+            "example": 9375000,
+            "description": "Child final price"
+          },
+          "price_final_inf": {
+            "type": "number",
+            "example": 1250000,
+            "description": "Infant final price"
+          },
+          "price_final_fare": {
+            "type": "number",
+            "example": 12400000,
+            "description": "Adult base fare"
+          },
+          "price_final_chd_fare": {
+            "type": "number",
+            "example": 9300000
+          },
+          "price_final_inf_fare": {
+            "type": "number",
+            "example": 1240000
+          },
+          "capacity": {
+            "type": "integer",
+            "example": 9,
+            "description": "Available seats (may be sum of other_flights capacities)"
+          },
+          "from": {
+            "type": "string",
+            "example": "MHD"
+          },
+          "to": {
+            "type": "string",
+            "example": "KIH"
+          },
+          "number_flight": {
+            "type": "string",
+            "example": "4523",
+            "description": "Normalized flight number (airline prefix stripped)"
+          },
+          "type_flight": {
+            "type": "string",
+            "example": "Economy",
+            "description": "Cabin class label (EN)"
+          },
+          "carrier": {
+            "type": "string",
+            "example": "Airbus",
+            "description": "Aircraft family: Boeing MD / Airbus / Fokker / unknown"
+          },
+          "date_flight": {
+            "type": "string",
+            "format": "date",
+            "example": "2026-11-20"
+          },
+          "time_flight": {
+            "type": "string",
+            "example": "13:01:00",
+            "description": "Departure time"
+          },
+          "airline": {
+            "type": "string",
+            "example": "IranAir",
+            "description": "Airline display name"
+          },
+          "airline_logo": {
+            "type": "string",
+            "example": "IranAir_ok.png",
+            "description": "Airline logo filename / key"
+          },
+          "airline_logo_url": {
+            "type": "string",
+            "example": "https://cdn.agent724.ir/template/backc118/images/airline/IranAir_ok.png?v=3.82",
+            "description": "Full CDN URL for airline logo"
+          },
+          "IATA_code": {
+            "type": "string",
+            "example": "IR"
+          },
+          "cabinclass": {
+            "type": "string",
+            "example": "Y",
+            "description": "RBD / class code — pass to GetCaptcha"
+          },
+          "SellingType": {
+            "type": "string",
+            "example": "All"
+          },
+          "weelchairsupport": {
+            "type": "string",
+            "example": "YES"
+          },
+          "linktosite": {
+            "type": "string",
+            "example": "example.ir/Ticket-Mashhad-Kish.html?t=2026-11-20"
+          },
+          "price_Markup": {
+            "type": "number",
+            "example": 5,
+            "description": "Configured site markup for display (percent as-is if <100, otherwise absolute amount in site currency). 0 for system flights / no markup."
+          },
+          "Share_Sale": {
+            "type": "integer",
+            "example": 0
+          },
+          "has_stop": {
+            "type": "integer",
+            "example": 0,
+            "description": "Non-zero means connecting/stop flight. When set, end_date_flight / end_time_flight are null."
+          },
+          "alarm_msg": {
+            "type": "string",
+            "example": ""
+          },
+          "bag": {
+            "type": "integer",
+            "example": 20,
+            "description": "Baggage allowance (kg)"
+          },
+          "duration_minutes": {
+            "type": "integer",
+            "nullable": true,
+            "example": 95,
+            "description": "Flight duration in minutes; null if unknown"
+          },
+          "end_date_flight": {
+            "type": "string",
+            "nullable": true,
+            "format": "date",
+            "example": "2026-11-20",
+            "description": "Arrival date calculated from departure + duration_minutes. Null when duration unknown or has_stop != 0."
+          },
+          "end_time_flight": {
+            "type": "string",
+            "nullable": true,
+            "example": "14:36",
+            "description": "Arrival time (HH:mm). Null when duration unknown or has_stop != 0."
+          },
+          "cancellation_rule": {
+            "type": "array",
+            "nullable": true,
+            "description": "Parsed cancellation penalty rules for site language. Null/empty when unavailable.",
+            "items": {
+              "$ref": "#/components/schemas/CancellationRuleItem"
+            }
+          },
+          "nationalities": {
+            "$ref": "#/components/schemas/FlightNationalities"
+          },
+          "other_flights": {
+            "type": "array",
+            "description": "Other matching options for the same airline/route/number group",
+            "items": {
+              "$ref": "#/components/schemas/OtherFlightItem"
+            }
+          }
+        }
+      },
+      "ChargeData": {
+        "type": "object",
+        "properties": {
+          "parent_charge": {
+            "type": "number",
+            "example": 50000000
+          },
+          "child_charge": {
+            "type": "number",
+            "example": 25000000
+          }
+        }
+      },
+      "CaptchaInfo": {
+        "title": "CaptchaInfo",
+        "type": "object",
+        "required": [
+          "ajency_online_ID",
+          "from_flight",
+          "to_flight",
+          "date_flight",
+          "time_flight",
+          "number_flight",
+          "airline"
+        ],
+        "description": "Select a flight from Available and start reservation (step 1)",
+        "properties": {
+          "ajency_online_ID": {
+            "type": "integer",
+            "example": 446
+          },
+          "from_flight": {
+            "type": "string",
+            "example": "MHD"
+          },
+          "to_flight": {
+            "type": "string",
+            "example": "KIH"
+          },
+          "date_flight": {
+            "type": "string",
+            "format": "date",
+            "example": "2026-11-20"
+          },
+          "time_flight": {
+            "type": "string",
+            "example": "13:01:00",
+            "description": "Must match Available.time_flight"
+          },
+          "number_flight": {
+            "type": "string",
+            "example": "4523",
+            "description": "Normalized number from Available"
+          },
+          "airline": {
+            "type": "string",
+            "example": "IranAir",
+            "description": "Airline display name from Available.airline"
+          },
+          "cabinclass": {
+            "type": "string",
+            "nullable": true,
+            "example": "Y",
+            "description": "Optional; from Available.cabinclass"
+          },
+          "sellingType": {
+            "type": "string",
+            "nullable": true,
+            "example": "All",
+            "description": "Optional; currently stored as All"
+          }
+        }
+      },
+      "CaptchaData": {
+        "type": "object",
+        "properties": {
+          "id_request": {
+            "type": "integer",
+            "example": 10064,
+            "description": "Reservation request id for next steps"
+          },
+          "link_captcha": {
+            "type": "string",
+            "example": "https://api724.ir/Global/captcha_rezervation?id_request=10064",
+            "description": "Captcha image URL. Empty string when user.captcha_status != 1"
+          },
+          "messages": {
+            "type": "string",
+            "nullable": true,
+            "description": "Path-alert / route notice in site language (HTML stripped). Null when none."
+          }
+        }
+      },
+      "Passenger_Info": {
+        "title": "Passenger_Info",
+        "type": "object",
+        "required": [
+          "passengerType",
+          "fnameen",
+          "lnameen",
+          "gender",
+          "nationality",
+          "passengerCode",
+          "nationalitycode"
+        ],
+        "description": "Passenger for Reservation. Max 9 passengers. INF requires at least as many ADL. Duplicate names/codes rejected.",
+        "properties": {
+          "passengerType": {
+            "type": "string",
+            "enum": [
+              "ADL",
+              "CHD",
+              "INF"
+            ],
+            "example": "ADL",
+            "description": "ADL >=12y, CHD 2-11y, INF <2y (validated when birthday is sent)"
+          },
+          "fnamefa": {
+            "type": "string",
+            "example": "تست",
+            "description": "Optional Persian first name"
+          },
+          "lnamefa": {
+            "type": "string",
+            "example": "تست",
+            "description": "Optional Persian last name"
+          },
+          "fnameen": {
+            "type": "string",
+            "example": "Test"
+          },
+          "lnameen": {
+            "type": "string",
+            "example": "Test"
+          },
+          "gender": {
+            "type": "integer",
+            "enum": [
+              1,
+              2
+            ],
+            "example": 1,
+            "description": "1 = MR (man), 2 = MRS (woman)"
+          },
+          "nationality": {
+            "type": "integer",
+            "enum": [
+              1,
+              2
+            ],
+            "example": 1,
+            "description": "1 = Iranian, 2 = Non-Iranian. Also inferred from nationalitycode IRN/IRI -> Iranian."
+          },
+          "passengerCode": {
+            "type": "string",
+            "example": "0013542419",
+            "description": "Iranian national code for domestic Iranian passengers; passport number otherwise"
+          },
+          "nationalitycode": {
+            "type": "string",
+            "example": "IRI",
+            "description": "ISO-like nationality code. IRI/IRN = Iran. Examples: PAK, KSA, IRQ, AFG, ARM, BHR, CHN, IND, KWT, MYS, SYR, TUR, TKM, TJK, QAT. For flight-level acceptance check Available.nationalities.allowed / disallowed."
+          },
+          "expdate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true,
+            "example": "2028-09-22",
+            "description": "Passport expiry. When provided must be at least 6 months after flight date."
+          },
+          "birthday": {
+            "type": "string",
+            "format": "date",
+            "nullable": true,
+            "example": "1990-05-01",
+            "description": "Birth date. When provided, age is validated against passengerType relative to flight date."
+          }
+        }
+      },
+      "ReservationInfo": {
+        "title": "ReservationInfo",
+        "type": "object",
+        "required": [
+          "id_request",
+          "countryMobileCode",
+          "mobile",
+          "passengers"
+        ],
+        "description": "Temporary reservation (step 2). email is optional. captchcode is required only when the authenticated user has captcha_status=1.",
+        "properties": {
+          "id_request": {
+            "type": "integer",
+            "example": 10064
+          },
+          "captchcode": {
+            "type": "integer",
+            "nullable": true,
+            "example": 123456,
+            "description": "Required only if user.captcha_status=1. Read digits from link_captcha image."
+          },
+          "countryMobileCode": {
+            "type": "string",
+            "example": "+98",
+            "description": "e.g. +98 or 0098. For +98/+964 mobile must be 11 digits."
+          },
+          "mobile": {
+            "type": "string",
+            "example": "09123456789"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "nullable": true,
+            "example": "test@test.com",
+            "description": "Optional"
+          },
+          "passengers": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 9,
+            "items": {
+              "$ref": "#/components/schemas/Passenger_Info"
+            }
+          }
+        }
+      },
+      "ReservationPassengerInfo": {
+        "type": "object",
+        "properties": {
+          "fname": {
+            "type": "string",
+            "example": "Test"
+          },
+          "lname": {
+            "type": "string",
+            "example": "Test"
+          },
+          "type": {
+            "type": "string",
+            "example": "ADL"
+          },
+          "fare": {
+            "type": "number",
+            "example": 10625000
+          },
+          "real_price": {
+            "type": "number",
+            "example": 12500000
+          }
+        }
+      },
+      "ReservationData": {
+        "type": "object",
+        "properties": {
+          "id_request": {
+            "type": "integer",
+            "example": 10064
+          },
+          "id_faktor": {
+            "type": "integer",
+            "example": 900000001,
+            "description": "Factor number for BuyTicket / PayAndBuyTicket"
+          },
+          "duplicate": {
+            "type": "integer",
+            "example": 0
+          },
+          "currency": {
+            "type": "string",
+            "example": "IRR"
+          },
+          "totalprice_request": {
+            "type": "number",
+            "example": 12500000
+          },
+          "passenger_info": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReservationPassengerInfo"
+            }
+          },
+          "class_r": {
+            "type": "string",
+            "example": ""
+          },
+          "one_price": {
+            "type": "number",
+            "example": 12500000
+          },
+          "own_com": {
+            "type": "number",
+            "example": 500000
+          },
+          "messages": {
+            "type": "string",
+            "nullable": true,
+            "description": "Path-alert message in site language"
+          }
+        }
+      },
+      "BuyTicketInfo": {
+        "title": "BuyTicketInfo",
+        "type": "object",
+        "required": [
+          "id_request",
+          "id_faktor"
+        ],
+        "description": "Issue ticket using account credit",
+        "properties": {
+          "id_request": {
+            "type": "integer",
+            "example": 10064
+          },
+          "id_faktor": {
+            "type": "integer",
+            "example": 900000001,
+            "description": "Must match reserves.faktor_number for id_request"
+          }
+        }
+      },
+      "BuyTicketPassengerInfo": {
+        "type": "object",
+        "properties": {
+          "fname": {
+            "type": "string"
+          },
+          "lname": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "example": "ADL"
+          },
+          "ticket_number": {
+            "type": "string",
+            "example": "999000001"
+          },
+          "fareprice": {
+            "type": "number",
+            "example": 1062500,
+            "description": "May be omitted for some agencies (e.g. ajency_online_ID=446)"
+          },
+          "real_price": {
+            "type": "number",
+            "example": 1250000
+          },
+          "kxp": {
+            "type": "string",
+            "nullable": true,
+            "description": "Agency-specific; may be stripped"
+          },
+          "lp": {
+            "type": "string",
+            "nullable": true,
+            "description": "Agency-specific; may be stripped"
+          }
+        }
+      },
+      "BuyTicketData": {
+        "type": "object",
+        "properties": {
+          "id_request": {
+            "type": "integer"
+          },
+          "id_faktor": {
+            "type": "integer"
+          },
+          "msg": {
+            "type": "string",
+            "example": "BuyTicket"
+          },
+          "pnrid_request": {
+            "type": "string",
+            "example": "ABC123"
+          },
+          "bank_Refnum": {
+            "type": "string"
+          },
+          "bank_TraceNo": {
+            "type": "string"
+          },
+          "linkticket": {
+            "type": "string",
+            "format": "uri"
+          },
+          "passenger_info": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BuyTicketPassengerInfo"
+            }
+          }
+        }
+      },
+      "PayAndBuyTicketInfo": {
+        "title": "PayAndBuyTicketInfo",
+        "type": "object",
+        "required": [
+          "id_request",
+          "id_faktor",
+          "price",
+          "redirectURL"
+        ],
+        "description": "Create payment link. accept_price in response is the payable amount in IRR (reserve.total_price).",
+        "properties": {
+          "id_request": {
+            "type": "integer",
+            "example": 10064
+          },
+          "id_faktor": {
+            "type": "integer",
+            "example": 900000001
+          },
+          "price": {
+            "type": "number",
+            "example": 12500000,
+            "description": "Client-declared price (validated against reserve)"
+          },
+          "redirectURL": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://yoursite.ir/payment/callback",
+            "description": "Bank gateway return URL"
+          }
+        }
+      },
+      "PayAndBuyTicketData": {
+        "type": "object",
+        "properties": {
+          "id_request": {
+            "type": "integer",
+            "example": 10064
+          },
+          "linkpay": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://bank.example/pay?token=..."
+          },
+          "accept_price": {
+            "type": "number",
+            "example": 12500000,
+            "description": "Payable amount in IRR"
+          }
+        }
+      },
+      "CheckTransactionInfo": {
+        "title": "CheckTransactionInfo",
+        "type": "object",
+        "required": [
+          "id_request",
+          "id_faktor"
+        ],
+        "description": "Verify bank payment after PayAndBuyTicket redirect",
+        "properties": {
+          "id_request": {
+            "type": "integer",
+            "example": 10064
+          },
+          "id_faktor": {
+            "type": "integer",
+            "example": 900000001
+          }
+        }
+      },
+      "CheckPenaltiInfo": {
+        "title": "CheckPenaltiInfo",
+        "type": "object",
+        "required": [
+          "id_faktor"
+        ],
+        "description": "Get cancel penalty for a reserved factor",
+        "properties": {
+          "id_faktor": {
+            "type": "integer",
+            "example": 900000001
+          }
+        }
+      },
+      "CheckPenaltiPassenger": {
+        "type": "object",
+        "properties": {
+          "ticket_ID": {
+            "type": "string",
+            "example": "7000000"
+          },
+          "fname": {
+            "type": "string"
+          },
+          "lname": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string",
+            "example": "1"
+          },
+          "type": {
+            "type": "string",
+            "example": "ADL"
+          }
+        }
+      },
+      "CheckPenaltiData": {
+        "type": "object",
+        "properties": {
+          "penalti": {
+            "type": "number",
+            "example": 5000000,
+            "description": "Penalty amount/value from upstream"
+          },
+          "passengers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CheckPenaltiPassenger"
+            }
+          }
+        }
+      },
+      "CancelTicketInfo": {
+        "title": "CancelTicketInfo",
+        "type": "object",
+        "required": [
+          "id_faktor",
+          "penalti",
+          "listticketID"
+        ],
+        "description": "Cancel one or more tickets of a reserved factor",
+        "properties": {
+          "id_faktor": {
+            "type": "integer",
+            "example": 900000001,
+            "description": "Must exist with status=reserved"
+          },
+          "penalti": {
+            "type": "integer",
+            "example": 50,
+            "description": "Penalty value (required integer; demo users max 100)"
+          },
+          "listticketID": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "example": "999000001"
+            },
+            "description": "Ticket numbers belonging to this reserve"
+          },
+          "reason": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "DalayelShakhsiMosafer",
+              "EbtalParvazAzSamteAirline",
+              "TajeelBishAz120Daghighe",
+              "TakhireBishAz3Ta5Saat",
+              "EbtalBeDalilBadiAbVaHava",
+              "EbtalParvazRaft"
+            ],
+            "example": "DalayelShakhsiMosafer",
+            "description": "Optional cancellation reason code"
+          },
+          "back_cart": {
+            "type": "boolean",
+            "nullable": true,
+            "example": false,
+            "description": "If true, refund to card (etebar_add=2); otherwise credit (etebar_add=1)"
+          }
+        }
+      }
+    }
+  }
+}

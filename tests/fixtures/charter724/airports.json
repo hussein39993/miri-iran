@@ -1,0 +1,36 @@
+{
+ "Result": "true",
+ "Msg": "Airportlist",
+ "Data": [
+  {
+   "code_int": 1,
+   "name_en": "Mashhad",
+   "name_fa": "مشهد",
+   "IATA_airport": "MHD"
+  },
+  {
+   "code_int": 2,
+   "name_en": "Kish",
+   "name_fa": "کیش",
+   "IATA_airport": "KIH"
+  },
+  {
+   "code_int": 3,
+   "name_en": "Tehran",
+   "name_fa": "تهران",
+   "IATA_airport": "THR"
+  },
+  {
+   "code_int": 4,
+   "name_en": "Bad",
+   "name_fa": "بد",
+   "IATA_airport": ""
+  },
+  {
+   "code_int": 5,
+   "name_en": "Mashhad again",
+   "name_fa": "مشهد",
+   "IATA_airport": "mhd"
+  }
+ ]
+}

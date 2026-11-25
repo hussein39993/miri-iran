@@ -1,0 +1,560 @@
+{
+ "Result": "true",
+ "Msg": "avail",
+ "Data": [
+  {
+   "ajency_online_ID": 446,
+   "type": "charter",
+   "DisplayLable": "اکونومی",
+   "currency": "IRR",
+   "price_final": 12500000,
+   "price_final_chd": 9375000,
+   "price_final_inf": 1250000,
+   "price_final_fare": 12400000,
+   "price_final_chd_fare": 9300000,
+   "price_final_inf_fare": 1240000,
+   "capacity": 9,
+   "from": "MHD",
+   "to": "KIH",
+   "number_flight": "4523",
+   "type_flight": "Economy",
+   "carrier": "Airbus",
+   "date_flight": "2026-11-20",
+   "time_flight": "13:01:00",
+   "airline": "IranAir",
+   "airline_logo": "IranAir_ok.png",
+   "IATA_code": "IR",
+   "cabinclass": "Y",
+   "SellingType": "All",
+   "weelchairsupport": "YES",
+   "linktosite": "example.ir/Ticket-Mashhad-Kish.html?t=2026-11-20",
+   "price_Markup": 5,
+   "Share_Sale": 0,
+   "has_stop": 0,
+   "alarm_msg": "",
+   "bag": 20,
+   "duration_minutes": 95,
+   "end_date_flight": "2026-11-20",
+   "end_time_flight": "14:36",
+   "cancellation_rule": [
+    {
+     "percent": 30,
+     "description": "از ۲۴ ساعت قبل از پرواز"
+    }
+   ],
+   "nationalities": {
+    "allowed": {
+     "fa": [
+      "ایرانی",
+      "عراقی"
+     ],
+     "en": [
+      "Iranian",
+      "Iraqi"
+     ],
+     "ar": [
+      "إيراني"
+     ]
+    },
+    "disallowed": {
+     "fa": [],
+     "en": [],
+     "ar": []
+    }
+   },
+   "other_flights": [
+    {
+     "currency": "IRR",
+     "price_final": 13000000,
+     "capacity": 5,
+     "type": "system",
+     "DisplayLable": "اکونومی",
+     "type_flight": "Economy"
+    }
+   ]
+  },
+  {
+   "ajency_online_ID": 446,
+   "type": "charter",
+   "DisplayLable": "بیزینس",
+   "currency": "IRR",
+   "price_final": 30000000,
+   "price_final_chd": 22500000,
+   "price_final_inf": 3000000,
+   "price_final_fare": 12400000,
+   "price_final_chd_fare": 9300000,
+   "price_final_inf_fare": 1240000,
+   "capacity": 9,
+   "from": "MHD",
+   "to": "KIH",
+   "number_flight": "4601",
+   "type_flight": "Business",
+   "carrier": "Airbus",
+   "date_flight": "2026-11-20",
+   "time_flight": "18:30:00",
+   "airline": "Mahan",
+   "airline_logo": "IranAir_ok.png",
+   "IATA_code": "W5",
+   "cabinclass": "C",
+   "SellingType": "All",
+   "weelchairsupport": "YES",
+   "linktosite": "example.ir/Ticket-Mashhad-Kish.html?t=2026-11-20",
+   "price_Markup": 5,
+   "Share_Sale": 0,
+   "has_stop": 0,
+   "alarm_msg": "",
+   "bag": 30,
+   "duration_minutes": 95,
+   "end_date_flight": "2026-11-20",
+   "end_time_flight": "20:05:00",
+   "cancellation_rule": [
+    {
+     "percent": 30,
+     "description": "از ۲۴ ساعت قبل از پرواز"
+    }
+   ],
+   "nationalities": {
+    "allowed": {
+     "fa": [
+      "ایرانی",
+      "عراقی"
+     ],
+     "en": [
+      "Iranian",
+      "Iraqi"
+     ],
+     "ar": [
+      "إيراني"
+     ]
+    },
+    "disallowed": {
+     "fa": [],
+     "en": [],
+     "ar": []
+    }
+   },
+   "other_flights": []
+  },
+  {
+   "ajency_online_ID": 446,
+   "type": "charter",
+   "DisplayLable": "اکونومی",
+   "currency": "IRR",
+   "price_final": 9000000,
+   "price_final_chd": 6750000,
+   "price_final_inf": 900000,
+   "price_final_fare": 12400000,
+   "price_final_chd_fare": 9300000,
+   "price_final_inf_fare": 1240000,
+   "capacity": 9,
+   "from": "MHD",
+   "to": "KIH",
+   "number_flight": "4700",
+   "type_flight": "Economy",
+   "carrier": "Airbus",
+   "date_flight": "2026-11-20",
+   "time_flight": "07:15:00",
+   "airline": "Qeshm",
+   "airline_logo": "IranAir_ok.png",
+   "IATA_code": "QB",
+   "cabinclass": "Y",
+   "SellingType": "All",
+   "weelchairsupport": "YES",
+   "linktosite": "example.ir/Ticket-Mashhad-Kish.html?t=2026-11-20",
+   "price_Markup": 5,
+   "Share_Sale": 0,
+   "has_stop": 1,
+   "alarm_msg": "",
+   "bag": 20,
+   "duration_minutes": null,
+   "end_date_flight": null,
+   "end_time_flight": null,
+   "cancellation_rule": null,
+   "nationalities": {
+    "allowed": {
+     "fa": [
+      "ایرانی",
+      "عراقی"
+     ],
+     "en": [
+      "Iranian",
+      "Iraqi"
+     ],
+     "ar": [
+      "إيراني"
+     ]
+    },
+    "disallowed": {
+     "fa": [],
+     "en": [],
+     "ar": []
+    }
+   },
+   "other_flights": [
+    {
+     "currency": "IRR",
+     "price_final": 13000000,
+     "capacity": 5,
+     "type": "system",
+     "DisplayLable": "اکونومی",
+     "type_flight": "Economy"
+    }
+   ]
+  },
+  {
+   "ajency_online_ID": 446,
+   "type": "charter",
+   "DisplayLable": "اکونومی",
+   "currency": "IRR",
+   "price_final": 0,
+   "price_final_chd": 0,
+   "price_final_inf": 0,
+   "price_final_fare": 12400000,
+   "price_final_chd_fare": 9300000,
+   "price_final_inf_fare": 1240000,
+   "capacity": 0,
+   "from": "MHD",
+   "to": "KIH",
+   "number_flight": "4800",
+   "type_flight": "Economy",
+   "carrier": "Airbus",
+   "date_flight": "2026-11-20",
+   "time_flight": "09:00:00",
+   "airline": "Zagros",
+   "airline_logo": "IranAir_ok.png",
+   "IATA_code": "ZV",
+   "cabinclass": "Y",
+   "SellingType": "All",
+   "weelchairsupport": "YES",
+   "linktosite": "example.ir/Ticket-Mashhad-Kish.html?t=2026-11-20",
+   "price_Markup": 5,
+   "Share_Sale": 0,
+   "has_stop": 0,
+   "alarm_msg": "",
+   "bag": 20,
+   "duration_minutes": 95,
+   "end_date_flight": "2026-11-20",
+   "end_time_flight": "14:36",
+   "cancellation_rule": [
+    {
+     "percent": 30,
+     "description": "از ۲۴ ساعت قبل از پرواز"
+    }
+   ],
+   "nationalities": {
+    "allowed": {
+     "fa": [
+      "ایرانی",
+      "عراقی"
+     ],
+     "en": [
+      "Iranian",
+      "Iraqi"
+     ],
+     "ar": [
+      "إيراني"
+     ]
+    },
+    "disallowed": {
+     "fa": [],
+     "en": [],
+     "ar": []
+    }
+   },
+   "other_flights": [
+    {
+     "currency": "IRR",
+     "price_final": 13000000,
+     "capacity": 5,
+     "type": "system",
+     "DisplayLable": "اکونومی",
+     "type_flight": "Economy"
+    }
+   ]
+  },
+  {
+   "ajency_online_ID": 446,
+   "type": "charter",
+   "DisplayLable": "اکونومی",
+   "currency": "IRR",
+   "price_final": 12500000,
+   "price_final_chd": 9375000,
+   "price_final_inf": 1250000,
+   "price_final_fare": 12400000,
+   "price_final_chd_fare": 9300000,
+   "price_final_inf_fare": 1240000,
+   "capacity": 2,
+   "from": "MHD",
+   "to": "KIH",
+   "number_flight": "4900",
+   "type_flight": "Economy",
+   "carrier": "Airbus",
+   "date_flight": "2026-11-20",
+   "time_flight": "10:00:00",
+   "airline": "Aseman",
+   "airline_logo": "IranAir_ok.png",
+   "IATA_code": "EP",
+   "cabinclass": "Y",
+   "SellingType": "All",
+   "weelchairsupport": "YES",
+   "linktosite": "example.ir/Ticket-Mashhad-Kish.html?t=2026-11-20",
+   "price_Markup": 5,
+   "Share_Sale": 0,
+   "has_stop": 0,
+   "alarm_msg": "",
+   "bag": 20,
+   "duration_minutes": 95,
+   "end_date_flight": "2026-11-20",
+   "end_time_flight": "14:36",
+   "cancellation_rule": [
+    {
+     "percent": 30,
+     "description": "از ۲۴ ساعت قبل از پرواز"
+    }
+   ],
+   "nationalities": {
+    "allowed": {
+     "fa": [
+      "ایرانی",
+      "عراقی"
+     ],
+     "en": [
+      "Iranian",
+      "Iraqi"
+     ],
+     "ar": [
+      "إيراني"
+     ]
+    },
+    "disallowed": {
+     "fa": [],
+     "en": [],
+     "ar": []
+    }
+   },
+   "other_flights": [
+    {
+     "currency": "IRR",
+     "price_final": 13000000,
+     "capacity": 5,
+     "type": "system",
+     "DisplayLable": "اکونومی",
+     "type_flight": "Economy"
+    }
+   ]
+  },
+  {
+   "ajency_online_ID": 446,
+   "type": "charter",
+   "DisplayLable": "ویژه",
+   "currency": "IRR",
+   "price_final": 12500000,
+   "price_final_chd": 9375000,
+   "price_final_inf": 1250000,
+   "price_final_fare": 12400000,
+   "price_final_chd_fare": 9300000,
+   "price_final_inf_fare": 1240000,
+   "capacity": 9,
+   "from": "MHD",
+   "to": "KIH",
+   "number_flight": "5000",
+   "type_flight": "Premium Economy Business",
+   "carrier": "Airbus",
+   "date_flight": "2026-11-20",
+   "time_flight": "11:00:00",
+   "airline": "Caspian",
+   "airline_logo": "IranAir_ok.png",
+   "IATA_code": "RV",
+   "cabinclass": "Y",
+   "SellingType": "All",
+   "weelchairsupport": "YES",
+   "linktosite": "example.ir/Ticket-Mashhad-Kish.html?t=2026-11-20",
+   "price_Markup": 5,
+   "Share_Sale": 0,
+   "has_stop": 0,
+   "alarm_msg": "",
+   "bag": 20,
+   "duration_minutes": 95,
+   "end_date_flight": "2026-11-20",
+   "end_time_flight": "14:36",
+   "cancellation_rule": [
+    {
+     "percent": 30,
+     "description": "از ۲۴ ساعت قبل از پرواز"
+    }
+   ],
+   "nationalities": {
+    "allowed": {
+     "fa": [
+      "ایرانی",
+      "عراقی"
+     ],
+     "en": [
+      "Iranian",
+      "Iraqi"
+     ],
+     "ar": [
+      "إيراني"
+     ]
+    },
+    "disallowed": {
+     "fa": [],
+     "en": [],
+     "ar": []
+    }
+   },
+   "other_flights": [
+    {
+     "currency": "IRR",
+     "price_final": 13000000,
+     "capacity": 5,
+     "type": "system",
+     "DisplayLable": "اکونومی",
+     "type_flight": "Economy"
+    }
+   ]
+  },
+  {
+   "ajency_online_ID": 446,
+   "type": "charter",
+   "DisplayLable": "اکونومی",
+   "currency": "USD",
+   "price_final": 12500000,
+   "price_final_chd": 9375000,
+   "price_final_inf": 1250000,
+   "price_final_fare": 12400000,
+   "price_final_chd_fare": 9300000,
+   "price_final_inf_fare": 1240000,
+   "capacity": 9,
+   "from": "MHD",
+   "to": "KIH",
+   "number_flight": "5100",
+   "type_flight": "Economy",
+   "carrier": "Airbus",
+   "date_flight": "2026-11-20",
+   "time_flight": "12:00:00",
+   "airline": "Foreign",
+   "airline_logo": "IranAir_ok.png",
+   "IATA_code": "XX",
+   "cabinclass": "Y",
+   "SellingType": "All",
+   "weelchairsupport": "YES",
+   "linktosite": "example.ir/Ticket-Mashhad-Kish.html?t=2026-11-20",
+   "price_Markup": 5,
+   "Share_Sale": 0,
+   "has_stop": 0,
+   "alarm_msg": "",
+   "bag": 20,
+   "duration_minutes": 95,
+   "end_date_flight": "2026-11-20",
+   "end_time_flight": "14:36",
+   "cancellation_rule": [
+    {
+     "percent": 30,
+     "description": "از ۲۴ ساعت قبل از پرواز"
+    }
+   ],
+   "nationalities": {
+    "allowed": {
+     "fa": [
+      "ایرانی",
+      "عراقی"
+     ],
+     "en": [
+      "Iranian",
+      "Iraqi"
+     ],
+     "ar": [
+      "إيراني"
+     ]
+    },
+    "disallowed": {
+     "fa": [],
+     "en": [],
+     "ar": []
+    }
+   },
+   "other_flights": [
+    {
+     "currency": "IRR",
+     "price_final": 13000000,
+     "capacity": 5,
+     "type": "system",
+     "DisplayLable": "اکونومی",
+     "type_flight": "Economy"
+    }
+   ]
+  },
+  {
+   "ajency_online_ID": 446,
+   "type": "charter",
+   "DisplayLable": "اکونومی",
+   "currency": "IRR",
+   "price_final": 12500000,
+   "price_final_chd": 9375000,
+   "price_final_inf": 1250000,
+   "price_final_fare": 12400000,
+   "price_final_chd_fare": 9300000,
+   "price_final_inf_fare": 1240000,
+   "capacity": 9,
+   "from": "MHD",
+   "to": "KIH",
+   "number_flight": "4523",
+   "type_flight": "Economy",
+   "carrier": "Airbus",
+   "date_flight": "2026-11-20",
+   "time_flight": "13:01:00",
+   "airline": "IranAir",
+   "airline_logo": "IranAir_ok.png",
+   "IATA_code": "IR",
+   "cabinclass": "Y",
+   "SellingType": "All",
+   "weelchairsupport": "YES",
+   "linktosite": "example.ir/Ticket-Mashhad-Kish.html?t=2026-11-20",
+   "price_Markup": 5,
+   "Share_Sale": 0,
+   "has_stop": 0,
+   "alarm_msg": "",
+   "bag": 20,
+   "duration_minutes": 95,
+   "end_date_flight": "2026-11-20",
+   "end_time_flight": "14:36",
+   "cancellation_rule": [
+    {
+     "percent": 30,
+     "description": "از ۲۴ ساعت قبل از پرواز"
+    }
+   ],
+   "nationalities": {
+    "allowed": {
+     "fa": [
+      "ایرانی",
+      "عراقی"
+     ],
+     "en": [
+      "Iranian",
+      "Iraqi"
+     ],
+     "ar": [
+      "إيراني"
+     ]
+    },
+    "disallowed": {
+     "fa": [],
+     "en": [],
+     "ar": []
+    }
+   },
+   "other_flights": [
+    {
+     "currency": "IRR",
+     "price_final": 13000000,
+     "capacity": 5,
+     "type": "system",
+     "DisplayLable": "اکونومی",
+     "type_flight": "Economy"
+    }
+   ]
+  }
+ ]
+}
