@@ -78,8 +78,50 @@
   function run(root, service, flow) {
     const steps = flow === 'travel' ? ['search', 'results', 'details', 'review', 'done'] : ['form', 'review', 'done'];
     const st = { i: 0, form: {}, cust: {}, pick: null, rec: null, errs: {} };
-    const ds = defs(service);
-    const box = el('div'); root.append(box); draw();
+    
+let ds = defs(service);
+const box = el('div');
+root.append(box);
+
+if (service === 'flight') {
+  box.textContent = 'جارٍ تحميل المطارات...';
+
+  fetch('/api/airports')
+    .then(response => {
+      if (!response.ok) throw new Error('Airport API failed');
+      return response.json();
+    })
+    .then(data => {
+      if (!Array.isArray(data.airports) || !data.airports.length) {
+        throw new Error('No airports returned');
+      }
+
+      const opts = data.airports
+        .filter(a => a.code)
+        .map(a => [
+          a.code,
+          `${a.nameFa || a.nameEn || a.code} (${a.code})`
+        ]);
+
+      ds = defs(service);
+
+      ds.forEach(d => {
+        if (d.name === 'from' || d.name === 'to') {
+          d.opts = opts;
+          d.val = d.name === 'from' ? 'MHD' : 'KIH';
+        }
+      });
+
+      draw();
+    })
+    .catch(error => {
+      console.error(error);
+      box.textContent = 'تعذر تحميل المطارات. تحقق من الاتصال بالخادم.';
+    });
+} else {
+  draw();
+}
+  
 
     function progress() {
       const ol = el('ol', undefined, 'progress', { 'aria-label': t('prog') });
